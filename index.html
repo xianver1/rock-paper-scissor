@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAPER ROCK SCISSOR</title>
+    <style>
+        body {
+            background-image: url('game.jpg');
+            color: #FFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 780px;
+        }
+        .container {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            background-color: rgba(24, 23, 23, 0.685);
+            margin-top: 100px;
+            padding: 20px;
+            border: 0px solid white;
+            width: 30%;
+            color:orange;
+        }
+        #container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px; 
+        }
+        #pts, #pts2 {
+            font-size: 12px;
+            color: black;
+        }
+
+        #display, #opponent {
+            display: inline-block;
+            width: 45%;
+        }
+
+        #displayimage, #displayimage2 {
+            height: 150px;
+            margin-top: 25px;
+        }
+
+        #displaytext {
+            font-size: 1.5em;
+            color: black;
+            margin: 20px 0;
+        }
+        h2{
+            margin-left: 3px;
+            margin-top: 0px;
+            color: black;
+        }
+
+        #playbtn, #restartbtn {
+            background-color: green;
+            color: white;
+            width: 150px;
+            height: 60px;
+            margin: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 80px;
+            margin: 50px;
+        }
+        .image{
+            margin-top: 40px;
+        }
+        .pts {
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        #restartbtn {
+            background-color: red;
+        }
+
+        #playbtn:hover, #restartbtn:hover {
+            background-color: yellow;
+            color: black;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PAPER ROCK SCISSOR</h1>
+        <p id="displaytext"></p>
+        <div id="display" class="image">
+            <p>Your scissore: <span id="mine">0</span></p>
+            <img id="displayimage" src="paper.png" alt="Choice Image">
+        </div>
+        <div id="opponent" class="image">
+            <p>Computer Score: <span id="computer">0</span></p>
+            <img id="displayimage2" src="paper.png" alt="Choice Image">
+        </div>
+        <div>
+            <button id="playbtn" onclick="playGame()">FIGHT!</button>
+            <button id="restartbtn" onclick="restartGame()">RESTART</button>
+        </div>
+    </div>
+    <script>
+        const choices = ["hand.png", "paper.png", "scissor.png"];
+        let wins = 0;
+        let losses = 0;
+        let ties = 0;
+
+        function playGame() {
+            const playerPickImg = document.getElementById('displayimage');
+            const computerPickImg = document.getElementById('displayimage2');
+            const playerIndex = Math.floor(Math.random() * choices.length);
+            const computerIndex = Math.floor(Math.random() * choices.length);
+            const playerChoice = choices[playerIndex];
+            const computerChoice = choices[computerIndex];
+
+            playerPickImg.src = playerChoice;
+            computerPickImg.src = computerChoice;
+
+            let text = ""; 
+            let textColor = "";
+
+            if (playerChoice === computerChoice) {
+                ties++;
+                text = "It's a tie!";
+                textColor = "yellow"
+            } else if (
+                (playerChoice === "hand.png" && computerChoice === "scissor.png") ||
+                (playerChoice === "paper.png" && computerChoice === "hand.png") ||
+                (playerChoice === "scissor.png" && computerChoice === "paper.png")
+            ) {
+                wins++;
+                document.getElementById('mine').textContent = wins;
+                text = "You get the score!";
+                textColor = "yellow"
+
+            } else {
+                losses++;
+                document.getElementById('computer').textContent = losses;
+                text = "Computer gets the score.";
+                textColor = "yellow"
+            }
+
+            let displayTextElement = document.getElementById('displaytext');
+            displayTextElement.textContent = text;
+            displayTextElement.style.color = textColor;
+
+
+            if (wins === 10 || losses === 10) {
+                endGame();
+            }
+        }
+
+
+        function endGame() {
+            let messText = "";
+            if (wins === 10) {
+                messText = "Congratulations! You won the game!";
+            } else {
+                messText = "Game over! Computer won the game.";
+            }
+            document.getElementById('displaytext').textContent = messText;
+            document.getElementById('playbtn').disabled = true;
+            document.getElementById('restartbtn').textContent = "PLAY AGAIN";
+        }
+
+
+        function restartGame() {
+            wins = 0;
+            losses = 0;
+            ties = 0;
+            document.getElementById('mine').textContent = wins;
+            document.getElementById('computer').textContent = losses;
+
+            document.getElementById('displayimage').src = "paper.png";
+            document.getElementById('displayimage2').src = "paper.png";
+
+            document.getElementById('displaytext').textContent = "";
+
+            document.getElementById('playbtn').disabled = false;
+            document.getElementById('restartbtn').textContent = "RESTART";
+        }
+
+    </script>
+</body>
+</html>
